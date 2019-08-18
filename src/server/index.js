@@ -14,8 +14,9 @@ const server = () => {
       'Access-Control-Allow-Origin': '*', // <= This is not secure, use it only in developmnet
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
     });
+    next();
   });
-  
+
   return app;
 }
 
