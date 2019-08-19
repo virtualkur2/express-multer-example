@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../config');
 
 const router = express.Router();
 
@@ -10,10 +11,12 @@ const server = () => {
 
   //Enabling CORS for development with '*'
   app.use((req, res, next) => {
-    res.set({
-      'Access-Control-Allow-Origin': '*', // <= This is not secure, use it only in developmnet
-      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-    });
+    if(config.env === 'development') {
+      res.set({
+        'Access-Control-Allow-Origin': '*', // <= This is not secure, use it only in developmnet
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+      });
+    }
     next();
   });
 
