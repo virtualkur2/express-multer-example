@@ -80,6 +80,19 @@ UserSchema.methods = {
     catch(err) {
       throw err;
     }
+  },
+  getInfo: function() {
+    const _id = this._id;
+    const name = this.name;
+    const lastname = this.lastname;
+    const email = this.email;
+    const isAdmin = this.isAdmin;
+    const createdAt = this.updatedAt;
+    const info = { name, lastname, email, isAdmin, createdAt };
+    if(this.updatedAt) {
+      info.updatedAt = this.updatedAt;
+    }
+    return info;
   }
 }
 
