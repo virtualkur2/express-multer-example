@@ -4,7 +4,10 @@ const crypto = require('crypto');
 const saltLength = 16;  // Length of generated salt
 const keyLength = 33;   // Length of derived key
 const options = {
-  cost: 2**14          // Computational cost, the higher the better.
+  cost: 2**14,              // Default: 2**14 (N)
+  blocksize: 8,             // Default: 8 (r)
+  parallelization: 1,       // Default: 1 (p)
+  maxmem: 32 * 1024 * 1024  //Default: 32 *1024 *1024
 }
 
 const typeError = new TypeError('Invalid argument');
@@ -78,12 +81,14 @@ const helper = {
         const constructedPassword = constructPassword(derivedKey.toString('base64'), salt);
         cb(null, constructedPassword);
       });
+    } else {
+      throw typeError;
     }
   }
 }
 
 const constructPassword = (hash, salt) => {
-  let str = '$s$'
+  let str = '$scrypt$'
   str = str.concat(keyLength).concat('$');
   str = str.concat(options.cost).concat('$');
   str = str.concat(salt).concat('$');
@@ -97,6 +102,9 @@ const genSalt = () => {
 }
 
 const getValues = (str) => {
+  // TODO: check if str has the right format
+  // example of format:
+  // $scrypt$N=<value>$r=<value>$p=<value>$mem=<value>$salt$hash
   return str.split('$');
 }
 
