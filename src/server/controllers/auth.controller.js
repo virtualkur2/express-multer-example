@@ -4,7 +4,7 @@ const secret = require('../../config').secret;
 
 const tokenMaxAge = 60*60; // Token expiration time is expressed on seconds
 
-const auth = {
+const controller = {
   signin: (req, res, next) => {
     User.findOne({email: req.body.email}, async (err, user) => {
       if(err) {
@@ -74,3 +74,5 @@ const getToken = (req) => {
   console.log('No token provided');
   return;
 }
+
+module.exports = controller;
