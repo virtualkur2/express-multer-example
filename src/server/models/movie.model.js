@@ -44,4 +44,14 @@ const MovieSchema = new mongoose.Schema({
   ]
 });
 
+MovieSchema.methods = {
+  getInfo: function() {
+    const _id = this._id;
+    const title = this.title;
+    const image = this.image;
+    const info = { _id, title, image }
+    return info;
+  }
+}
+
 module.exports = mongoose.model('Movie', MovieSchema);
