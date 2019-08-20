@@ -29,4 +29,16 @@ const controller = {
       });
     });
   },
+  remove: (req, res, next) => {
+    let user = req.profile;
+    user.remove((err, deletedUser) => {
+      if(err) {
+        return next(err);
+      }
+      return res.status(200).json({
+        message: 'Successfully deleted!'
+      });
+    });
+  },
+  
 }
