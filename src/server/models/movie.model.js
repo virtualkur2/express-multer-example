@@ -6,7 +6,10 @@ const MovieSchema = new mongoose.Schema({
     required: true,
     trim: true,
     minLength: 1,
-    maxLength: 255
+    maxLength: 255,
+    unique: 'This movie already exists',
+    index: true,
+    lowercase: true
   },
   genres: [
     {
@@ -17,6 +20,7 @@ const MovieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
+    lowercase: true
     default: 'movie.jpeg'
   },
   modify: [
@@ -30,7 +34,11 @@ const MovieSchema = new mongoose.Schema({
         default: Date.now
       },
       description: {
-        type: String
+        type: String,
+        lowercase: true,
+        trim: true,
+        minLength: 3,
+        maxLength: 255
       }
     }
   ]
