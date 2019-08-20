@@ -43,5 +43,20 @@ const controller = {
   userById: (req, res, next, id) => {
     User.findById(id).exec(findUsrCallback);
   },
-  
+  userByEmail: (req, res, next, email) => {
+    User.find({email: email}).exec(findUsrCallback);
+  }
+}
+
+const findUsrCallback = (err, user) => {
+  if(err) {
+    return next(err);
+  }
+  if(!user) {
+    const err = new Error('User not found!');
+    err.httpStatusCode = 404;
+    return next(err);
+  }
+  req.profile = user;
+  next();
 }
