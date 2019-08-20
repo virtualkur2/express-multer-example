@@ -20,3 +20,5 @@ const users = (router) => {
 
   return router;
 }
+
+module.exports = users;
