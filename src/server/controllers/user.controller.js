@@ -18,6 +18,15 @@ const controller = {
     });
   },
   update: (req, res, next) => {
-    
-  }
+    let user = Object.assign({}, req.profile, req.body);
+    user.updatedAt = Date.now();
+    user.save((err, result) => {
+      if(err) {
+        return next(err);
+      }
+      return res.status(201).json({
+        message: 'Succesfully updated!'
+      });
+    });
+  },
 }
