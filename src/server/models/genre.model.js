@@ -7,7 +7,9 @@ const GenreSchema = new mongoose.Schema({
     index: true,
     unique: 'This genre already exists!',
     trim: true,
-    lowercase: true
+    lowercase: true,
+    minLength: 3,
+    maxLength: 50
   },
   createdAt: {
     type: Date,
