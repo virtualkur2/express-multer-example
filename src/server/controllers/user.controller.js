@@ -40,5 +40,8 @@ const controller = {
       });
     });
   },
+  userById: (req, res, next, id) => {
+    User.findById(id).exec(findUsrCallback);
+  },
   
 }
