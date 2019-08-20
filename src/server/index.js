@@ -1,5 +1,6 @@
 const express = require('express');
 const config = require('../config');
+const routes = require('./routes');
 
 const router = express.Router();
 
@@ -9,13 +10,28 @@ const server = () => {
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
 
-  // Helmet protection
+  // Header protection
   app.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
     res.setHeader('Surrogate-Control', 'no-store');
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
+    res.setHeader('X-Download-Options', 'noopen');
+    res.setHeader('X-DNS-Prefetch-Control', 'off');
+    res.setHeader('X-Frame-Options', 'sameorigin');
+    //********************************************************************
+    // next piece of code was taken and adapted from:
+    // https://github.com/helmetjs/x-xss-protection/blob/master/index.ts
+    const matches = /msie\s*(\d+)/i.exec(req.headers['user-agent'] || '');
+    if(!matches || parseFloat(matches[1]) >= 9) {
+      res.setHeader('X-XSS-Protection', '1; mode=block');
+    } else {
+      res.setHeader('X-XSS-Protection', '0');
+    }
+    //********************************************************************
+    res.setHeader('Referrer-Policy', 'same-origin');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
     next();
   });
 
@@ -30,6 +46,7 @@ const server = () => {
     next();
   });
 
+  app.use(routes(router));
 
   return app;
 }
