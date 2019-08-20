@@ -9,6 +9,16 @@ const server = () => {
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
 
+  // Helmet protection
+  app.use((req, res, next) => {
+    res.removeHeader('X-Powered-By');
+    res.setHeader('Surrogate-Control', 'no-store');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    next();
+  });
+
   //Enabling CORS for development with '*'
   app.use((req, res, next) => {
     if(config.env === 'development') {
@@ -19,6 +29,7 @@ const server = () => {
     }
     next();
   });
+
 
   return app;
 }
