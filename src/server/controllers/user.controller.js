@@ -60,3 +60,5 @@ const findUsrCallback = (err, user) => {
   req.profile = user;
   next();
 }
+
+module.exports = controller;
