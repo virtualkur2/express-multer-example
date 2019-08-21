@@ -20,7 +20,7 @@ const MovieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    lowercase: true
+    lowercase: true,
     default: 'movie.jpeg'
   },
   modify: [
