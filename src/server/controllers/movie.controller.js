@@ -2,11 +2,12 @@ const Movie = require('../models/movie.model');
 
 const controller = {
     list: (req, res, next) => {
-      let limit = parseInt(req.query.limit);
-      let page = parseInt(req.query.page);
       // Check validity of limit, 50 documents is a low quantity of documents to fetch
       // Indeed, we let the user to specify limit=0, as this mean 'no limit' at all
+      let limit = req.query.limit ? parseInt(req.query.limit) : 0;
       if(isNaN(limit) || limit < 0 || limit > 50) limit = 50;
+
+      let page = parseInt(req.query.page);
       // check for pagination
       if(isNaN(page) || page < 0) { // no pagination
         getMovies(limit).exec((err, movies) => {
