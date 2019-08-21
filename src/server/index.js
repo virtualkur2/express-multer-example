@@ -12,14 +12,18 @@ const server = () => {
 
   // Header protection
   app.use((req, res, next) => {
+    let csp = "default-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';";
+    res.setHeader('Content-Security-Policy', csp);
     res.removeHeader('X-Powered-By');
     res.setHeader('Surrogate-Control', 'no-store');
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+    res.setHeader('Expires', '-1');
     res.setHeader('X-Download-Options', 'noopen');
     res.setHeader('X-DNS-Prefetch-Control', 'off');
     res.setHeader('X-Frame-Options', 'sameorigin');
+    res.setHeader('X-Permitted-Cross-Domain-Policies', 'master-only');
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     //********************************************************************
     // next piece of code was taken and adapted from:
     // https://github.com/helmetjs/x-xss-protection/blob/master/index.ts
