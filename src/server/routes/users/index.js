@@ -16,7 +16,7 @@ const users = (router) => {
   .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove);
 
   router.param('userId', userCtrl.userById);
-  router.para,('userEmail', userCtrl.userByEmail);
+  router.param('userEmail', userCtrl.userByEmail);
 
   return router;
 }
