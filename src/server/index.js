@@ -50,6 +50,8 @@ const server = () => {
     next();
   });
 
+  app.use(express.static(__dirname + '/public'));
+
   app.use(routes(router));
 
   return app;
