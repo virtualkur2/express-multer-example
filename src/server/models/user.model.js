@@ -74,7 +74,7 @@ UserSchema.methods = {
       throw new TypeError('Password not valid');
     }
     try {
-      const hashedPassword = await hashHelper.hashPassword(pass);
+      const hashedPassword = await hashHelper.hashPassword(password);
       return hashedPassword;
     }
     catch(err) {
