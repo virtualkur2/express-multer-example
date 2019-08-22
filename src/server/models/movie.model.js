@@ -23,25 +23,31 @@ const MovieSchema = new mongoose.Schema({
     lowercase: true,
     default: 'movie.jpeg'
   },
-  modify: [
-    {
-      user: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-      },
-      date: {
-        type: Date,
-        default: Date.now
-      },
-      description: {
-        type: String,
-        lowercase: true,
-        trim: true,
-        minLength: 3,
-        maxLength: 255
-      }
+  createdAt: {
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    by: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
     }
-  ]
+  },
+  updatedAt: [{
+    date: {
+      type: Date
+    },
+    by: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    desc: {
+      type: String,
+      trim: true,
+      lowercase: true
+    }
+  }]
 });
 
 MovieSchema.methods = {
