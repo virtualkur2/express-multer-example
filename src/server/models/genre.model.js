@@ -12,11 +12,23 @@ const GenreSchema = new mongoose.Schema({
     maxLength: 50
   },
   createdAt: {
-    type: Date,
-    default: Date.now
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    by: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    }
   },
   updatedAt: {
-    type: Date
+    date: {
+      type: Date
+    },
+    by: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    }
   }
 });
 
