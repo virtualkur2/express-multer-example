@@ -23,6 +23,17 @@ const controller = {
           return res.status(200).json({movies, total});
         });
       });
+    },
+    create: (req, res, next) => {
+      let movie = new Movie(req.body);
+      movie.save((err, newMovie) => {
+        if(err) {
+          return next(err);
+        }
+        return res.status(200).json({
+          message: 'Successfully created movie!'
+        });
+      });
     }
 }
 
