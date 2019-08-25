@@ -23,13 +23,20 @@ const helper = {
   unlinkFile: (filePath, fileName, cb) => {
     if(!(cb instanceof Function)) {
       const typeError = new TypeError('Invalid callback argument');
-      throw typeError;
+      cb(typeError, null);
     }
     const fullPath = path.join(filePath, fileName);
     fs.stat(fullPath, (err, stats) => {
       if(err) return cb(err, null);
-      if(!stats.isFile()) return cb(new TypeError(`There is no such file: ${fileName}`));
-      return fs.unlink(fullPath, cb);
+      if(!stats.isFile()) return cb(new TypeError(`There is no such file: ${fileName}`), null);
+      fs.unlink(fullPath, (err) => {
+        if(err) {
+          err.fullPath = fullPath;
+          return cb(err, null);
+        }
+        console.log(`File: ${fullPath} succesfully unlinked.`);
+        return cb(null, true);
+      });
     });
   }
 }

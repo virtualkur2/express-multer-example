@@ -1,23 +1,8 @@
-const multer = require('multer');
-const mime = require('mime');
-const path = require('path');
-
 const Movie = require('../models/movie.model');
+const uploadHelper = require('../helpers/file.upload.helper');
 
-const movieImagesPath = 'src/server/public/images/movies';
 
-const movieImageStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, movieImagesPath);
-  },
-  filename: (req, file, cb) => {
-    let ext = path.extname(file.originalname);
-    ext = ext.length > 2 ? ext : '.'.concat(mime.extension(file.mimetype));
-    let filename = randomFileName(32).concat(ext);
-    cb(null, filename);
-  }
-});
-
+const movieImagesPath = './src/server/public/images/movies';
 const imageFilter = (req, file, cb) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
     return cb(new TypeError('Only images are allowed'), false);
@@ -25,9 +10,8 @@ const imageFilter = (req, file, cb) => {
   cb(null, true);
 }
 
-const randomFileName = (length) => {
-  return [...Array(length)].map((element) => (~~(Math.random()*36)).toString(36)).join('');
-}
+const uploadImage = uploadHelper.uploadFile(movieImagesPath, imageFilter);
+const unlinkImage = uploadHelper.unlinkFile;
 
 const controller = {
     list: (req, res, next) => {
@@ -55,25 +39,34 @@ const controller = {
     },
     create: (req, res, next) => {
       let movie = new Movie(req.body);
+      console.log(req.body.title);
       if(req.file) {
         movie.image = req.file.filename;
-        console.log(req.file);
       }
-      return res.status(200).json({ movie });
-      // movie.save((err, newMovie) => {
-      //   if(err) {
-      //     return next(err);
-      //   }
-      //   return res.status(200).json({
-      //     message: 'Successfully created movie!'
-      //   });
-      // });
+
+      movie.save((error, newMovie) => {
+        if(error) {
+          console.log(error.message);
+          unlinkImage(movieImagesPath, req.file.filename, (err, unlinked) => {
+            if(err) {
+              console.log(err.message);
+              console.log(`Conflictive path: ${err.fullPath}`);
+              return next(err);
+            }
+            return next(error);
+          });
+        }
+        return res.status(200).json({
+          message: 'Successfully created movie!'
+        });
+      });
     },
     read: (req, res, next) => {
 
     },
-    imageUpload: multer({ storage: movieImageStorage, fileFilter: imageFilter }),
+    upload: uploadImage,
 }
+
 
 const paginateMovies = (pageNumber, nPerPage) => {
   const cursor = Movie.find()

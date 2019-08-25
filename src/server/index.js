@@ -6,6 +6,7 @@ const router = express.Router();
 
 const server = () => {
   // Creating and configuring app
+
   const app = express();
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
