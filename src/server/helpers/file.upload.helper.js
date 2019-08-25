@@ -8,9 +8,9 @@ const randomFileName = (length) => {
 }
 
 const helper = {
-  uploadFile: (path, filter) => {
+  uploadFile: (filePath, fileFilter) => {
     const storage = multer.diskStorage({
-      destination: path,
+      destination: filePath,
       filename: (req, file, cb) => {
         let ext = path.extname(file.originalname);
         ext = ext.length > 2 ? ext : '.'.concat(mime.extension(file.mimetype));
@@ -18,9 +18,9 @@ const helper = {
         cb(null, filename);
       }
     });
-    return multer({ storage: storage, fileFilter: filter });
+    return multer({ storage: storage, fileFilter: fileFilter });
   },
-  deleteFile: (filePath, fileName, cb) => {
+  unlinkFile: (filePath, fileName, cb) => {
     if(!(cb instanceof Function)) {
       const typeError = new TypeError('Invalid callback argument');
       throw typeError;
