@@ -1,6 +1,7 @@
 const express = require('express');
 const config = require('../config');
 const routes = require('./routes');
+const errorHandler = require('./helpers/error.handler.helper');
 
 const router = express.Router();
 
@@ -54,6 +55,7 @@ const server = () => {
   app.use(express.static(__dirname + '/public'));
 
   app.use(routes(router));
+  app.use(errorHandler);
 
   return app;
 }

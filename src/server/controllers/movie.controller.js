@@ -39,7 +39,7 @@ const controller = {
     },
     create: (req, res, next) => {
       let movie = new Movie(req.body);
-      console.log(req.body.title);
+
       if(req.file) {
         movie.image = req.file.filename;
       }
@@ -47,10 +47,11 @@ const controller = {
       movie.save((error, newMovie) => {
         if(error) {
           console.log(error.message);
-          unlinkImage(movieImagesPath, req.file.filename, (err, unlinked) => {
+          return unlinkImage(movieImagesPath, req.file.filename, (err, unlinked) => {
             if(err) {
               console.log(err.message);
               console.log(`Conflictive path: ${err.fullPath}`);
+              err.httpStatusCode(500);
               return next(err);
             }
             return next(error);
