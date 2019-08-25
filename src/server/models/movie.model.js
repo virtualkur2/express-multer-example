@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const MovieSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
+    required: '\'Title\' is required',
     trim: true,
     minLength: 1,
     maxLength: 255,
@@ -19,19 +19,17 @@ const MovieSchema = new mongoose.Schema({
   ],
   image: {
     type: String,
-    required: true,
     lowercase: true,
     default: 'movie.jpeg'
   },
   createdAt: {
-    date: {
-      type: Date,
-      default: Date.now
-    },
-    by: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User'
-    }
+    type: Date,
+    default: Date.now
+  },
+  createdBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: '\'UserID\' field is required for movie create process'
   },
   updatedAt: [{
     date: {
@@ -40,7 +38,7 @@ const MovieSchema = new mongoose.Schema({
     by: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      required: true
+      required: '\'UserID\' field is required for movie update process'
     },
     desc: {
       type: String,

@@ -79,14 +79,14 @@ const genres = [
   { _id: ObjectId(), name: 'Horror', createdAt: {date: Date.now(), by: users[0]._id} },
 ];
 const movies = [
-  { _id: ObjectId(), title: 'Titanic', image: 'altbikl9rvoktafphfml1zwmnmjwxwhp.jpg', genres: [{ _id: genres[0]._id }, { _id: genres[7]._id}], createdAt: { date: Date.now(), by: users[0]._id} },
-  { _id: ObjectId(), title: 'Sospechosos habituales', image: 'e96xugs8ap88ui6ye91t7jq9vwdwt6to.jpg', genres: [{ _id: genres[9]._id }, { _id: genres[10]._id }, { _id: genres[11]._id }], createdAt: { date: Date.now(), by: users[0]._id} },
-  { _id: ObjectId(), title: 'El señor de los anillos: La comunidad del anillo', image: 'm7ebm4krv28xzmmvxmzfon6dey2yk00w.jpg', genres: [{ _id: genres[6]._id }], createdAt: { date: Date.now(), by: users[1]._id} },
-  { _id: ObjectId(), title: '¿Qué pasó ayer?', image: 'xms26o73p21kyrbuwlq074p99wcxbmwy.jpg', genres: [{ _id: genres[1]._id }], createdAt: { date: Date.now(), by: users[1]._id} },
-  { _id: ObjectId(), title: 'Duro de Matar', image: '4zvv1ki7jtb5kx0qxxlc3z4sryglge8s.jpg', genres: [{ _id: genres[3]._id }, { _id: genres[10]._id }], createdAt: { date: Date.now(), by: users[1]._id} },
-  { _id: ObjectId(), title: 'High School Musical', image: 'hsdwnezea815g87s03jdglc4xpy6tq62.jpg', genres: [{ _id: genres[1]._id }, { _id: genres[0]._id }, { _id: genres[8]._id }], createdAt: { date: Date.now(), by: users[1]._id} },
-  { _id: ObjectId(), title: 'Crepúsculo', image: '82j6qvrcla0b3o1inunsr9zg7rdrwmu9.jpg', genres: [{ _id: genres[0]._id }, { _id: genres[13]._id }, { _id: genres[7]._id }], createdAt: { date: Date.now(), by: users[0]._id} },
-  { _id: ObjectId(), title: 'It', image: '6t9a8t1uuamg358ivd4dgweq2be576uh.jpg', genres: [{ _id: genres[15]._id }], createdAt: { date: Date.now(), by: users[0]._id} },
+  { _id: ObjectId(), title: 'Titanic', image: 'altbikl9rvoktafphfml1zwmnmjwxwhp.jpg', genres: [{ _id: genres[0]._id }, { _id: genres[7]._id}], createdAt: Date.now(), createdBy: users[0]._id },
+  { _id: ObjectId(), title: 'Sospechosos habituales', image: 'e96xugs8ap88ui6ye91t7jq9vwdwt6to.jpg', genres: [{ _id: genres[9]._id }, { _id: genres[10]._id }, { _id: genres[11]._id }], createdAt: Date.now(), createdBy: users[0]._id },
+  { _id: ObjectId(), title: 'El señor de los anillos: La comunidad del anillo', image: 'm7ebm4krv28xzmmvxmzfon6dey2yk00w.jpg', genres: [{ _id: genres[6]._id }], createdAt: Date.now(), createdBy: users[1]._id },
+  { _id: ObjectId(), title: '¿Qué pasó ayer?', image: 'xms26o73p21kyrbuwlq074p99wcxbmwy.jpg', genres: [{ _id: genres[1]._id }], createdAt: Date.now(), createdBy: users[1]._id },
+  { _id: ObjectId(), title: 'Duro de Matar', image: '4zvv1ki7jtb5kx0qxxlc3z4sryglge8s.jpg', genres: [{ _id: genres[3]._id }, { _id: genres[10]._id }], createdAt: Date.now(), createdBy: users[1]._id },
+  { _id: ObjectId(), title: 'High School Musical', image: 'hsdwnezea815g87s03jdglc4xpy6tq62.jpg', genres: [{ _id: genres[1]._id }, { _id: genres[0]._id }, { _id: genres[8]._id }], createdAt: Date.now(), createdBy: users[1]._id },
+  { _id: ObjectId(), title: 'Crepúsculo', image: '82j6qvrcla0b3o1inunsr9zg7rdrwmu9.jpg', genres: [{ _id: genres[0]._id }, { _id: genres[13]._id }, { _id: genres[7]._id }], createdAt: Date.now(), createdBy: users[0]._id },
+  { _id: ObjectId(), title: 'It', image: '6t9a8t1uuamg358ivd4dgweq2be576uh.jpg', genres: [{ _id: genres[15]._id }], createdAt: Date.now(), createdBy: users[0]._id },
 ];
 
 const seed = () => {
