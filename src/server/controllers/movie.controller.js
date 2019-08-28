@@ -71,8 +71,7 @@ const controller = {
     read: (req,res,next) => {
       if(req.movies) {
         let movies = req.movies.map((movie) => {
-          movie = movie.getInfo();
-          return movie;
+          return movie.getInfo();
         });
         return res.status(200).json(movies);
       }
