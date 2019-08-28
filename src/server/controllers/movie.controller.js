@@ -39,7 +39,6 @@ const controller = {
     },
     create: (req, res, next) => {
       let movie = new Movie(req.body);
-
       if(req.file) {
         movie.image = req.file.filename;
       }
@@ -50,7 +49,7 @@ const controller = {
         // uploaded image.
         // maybe if we implement a validation middleware in front of the upload
         // process, then we will be saving some IO resources.
-        // TODO: create a validation middleware to do that
+        // TODO: create a validation middleware to save IO resources on image upload
         if(error) {
           console.log(error.message);
           return unlinkImage(movieImagesPath, req.file.filename, (err, unlinked) => {
@@ -79,7 +78,47 @@ const controller = {
       return res.status(200).json(movie);
     },
     update: (req, res, next) => {
-
+      let prevMovieImage = req.movie.image;
+      let movie = Object.assign({}, req.movie, req.body);
+      // verify if image was changed
+      movie.image = req.file ? req.file.filename : prevMovieImage;
+      movie.updatedAt = {
+        date: Date.now(),
+        by: '5d66221a11ca9709a9539985'
+      }
+      // TODO: create a validation middleware to save IO resources on image upload
+      movie.save((err, saved) => {
+        if(err) {
+          if(req.file) {
+            return unlinkImage(movieImagesPath, req.file.filename, (error, unlinked) => {
+              if(error) {
+                console.log(error.message);
+                console.log(`Conflictive path: ${error.fullPath}`);
+                error.httpStatusCode(500);
+                return next(error);
+              }
+              console.log(`Image ${req.file.filename} unlinked: ${unlinked}`);
+              console.log(err.message);
+              return next(err);
+            });
+          }
+          console.log(err.message);
+          return next(err);
+        }
+        if(req.file && prevMovieImage !== 'movie.jpeg') {
+          return unlinkImage(movieImagesPath, prevMovieImage, (err, unlinked) => {
+            if(err) {
+              console.log(err.message);
+              console.log(`Conflictive path: ${err.fullPath}`);
+              err.httpStatusCode(500);
+              return next(err);
+            }
+            console.log(`Image ${prevMovieImage} unlinked: ${unlinked}`);
+            return res.status(201).json(saved);
+          });
+        }
+        return res.status(201).json(saved);
+      });
     },
     remove: (req, res, next) => {
 

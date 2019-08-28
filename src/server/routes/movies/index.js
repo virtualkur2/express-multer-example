@@ -18,6 +18,7 @@ const movies = (router) => {
     .post(movieCtrl.upload.single('image'), movieCtrl.create);
 
   router.route('/api/movie/id/:movieId')
+    .put(movieCtrl.upload.single('image'), movieCtrl.update)
     .get(movieCtrl.read);
 
   router.route('/api/movie/title/:movieTitle')

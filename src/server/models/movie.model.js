@@ -38,11 +38,6 @@ const MovieSchema = new mongoose.Schema({
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: '\'UserID\' field is required for movie update process'
-    },
-    desc: {
-      type: String,
-      trim: true,
-      lowercase: true
     }
   }]
 });
