@@ -69,7 +69,15 @@ const controller = {
       });
     },
     read: (req,res,next) => {
-      return res.status(200).json(req.movie.getInfo());
+      if(req.movies) {
+        let movies = req.movies.map((movie) => {
+          movie = movie.getInfo();
+          return movie;
+        });
+        return res.status(200).json(movies);
+      }
+      let movie = req.movie.getInfo();
+      return res.status(200).json(movie);
     },
     update: (req, res, next) => {
 
@@ -86,6 +94,7 @@ const controller = {
         path: 'genres',
         select: 'name'
       };
+      // This will return a single Movie
       Movie.findById(id)
       .populate(populateCreatedBy)
       .populate(populateGenres)
@@ -102,23 +111,33 @@ const controller = {
         req.movie = movie;
         next();
       });
-      // Movie.findById(id)
-      //   .exec(
-      //     (err, movie) => {
-      //     if(err) {
-      //       return next(err);
-      //     }
-      //     if(!movie) {
-      //       const err = new Error('Movie not found');
-      //       err.httpStatusCode = 404;
-      //       return next(err);
-      //     }
-      //     req.movie = movie;
-      //     next();
-      //   });
     },
     movieByTitle: (req, res, next, title) => {
-      Movie.find({title: title}).exec(findMovieCallback);
+      const populateCreatedBy = {
+        path: 'createdBy',
+        select: 'name lastname'
+      };
+      const populateGenres = {
+        path: 'genres',
+        select: 'name'
+      };
+      // this will return an Array of Movies
+      Movie.find({title: title})
+      .populate(populateCreatedBy)
+      .populate(populateGenres)
+      .exec((err, movies) => {
+        if(err) {
+          console.log(err.message);
+          return next(err);
+        }
+        if(!movies) {
+          const err = new Error('Movie not found');
+          err.httpStatusCode = 404;
+          return next(err);
+        }
+        req.movies = movies;
+        next();
+      });
     },
     upload: uploadImage,
 
