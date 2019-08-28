@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const Genre = require('./genre.model');
 const MovieSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -11,11 +11,10 @@ const MovieSchema = new mongoose.Schema({
     index: true,
     lowercase: true
   },
-  genres: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Genre'
-    }
+  genres: [{
+    type: mongoose.Schema.ObjectId,
+    ref: 'Genre'
+  }
   ],
   image: {
     type: String,
@@ -53,7 +52,8 @@ MovieSchema.methods = {
     const _id = this._id;
     const title = this.title;
     const image = this.image;
-    const info = { _id, title, image }
+    const genres = this.genres;
+    const info = { _id, title, image, genres }
     return info;
   }
 }

@@ -12,7 +12,7 @@ const server = () => {
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
 
-  // Header protection
+  // Header protection ¿Use helmet instead?
   app.use((req, res, next) => {
     let csp = "default-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';";
     res.setHeader('Content-Security-Policy', csp);

@@ -45,6 +45,12 @@ const controller = {
       }
 
       movie.save((error, newMovie) => {
+        //this is tricky:
+        // if movie has a validation error then it's neccesary to delete (unlink)
+        // uploaded image.
+        // maybe if we implement a validation middleware in front of the upload
+        // process, then we will be saving some IO resources.
+        // TODO: create a validation middleware to do that
         if(error) {
           console.log(error.message);
           return unlinkImage(movieImagesPath, req.file.filename, (err, unlinked) => {
@@ -62,12 +68,74 @@ const controller = {
         });
       });
     },
-    read: (req, res, next) => {
+    read: (req,res,next) => {
+      return res.status(200).json(req.movie.getInfo());
+    },
+    update: (req, res, next) => {
 
     },
+    remove: (req, res, next) => {
+
+    },
+    movieById: (req, res, next, id) => {
+      const populateCreatedBy = {
+        path: 'createdBy',
+        select: 'name lastname'
+      };
+      const populateGenres = {
+        path: 'genres',
+        select: 'name'
+      };
+      Movie.findById(id)
+      .populate(populateCreatedBy)
+      .populate(populateGenres)
+      .exec((err, movie) => {
+        if(err) {
+          console.log(err.message);
+          return next(err);
+        }
+        if(!movie) {
+          const err = new Error('Movie not found');
+          err.httpStatusCode = 404;
+          return next(err);
+        }
+        req.movie = movie;
+        next();
+      });
+      // Movie.findById(id)
+      //   .exec(
+      //     (err, movie) => {
+      //     if(err) {
+      //       return next(err);
+      //     }
+      //     if(!movie) {
+      //       const err = new Error('Movie not found');
+      //       err.httpStatusCode = 404;
+      //       return next(err);
+      //     }
+      //     req.movie = movie;
+      //     next();
+      //   });
+    },
+    movieByTitle: (req, res, next, title) => {
+      Movie.find({title: title}).exec(findMovieCallback);
+    },
     upload: uploadImage,
+
 }
 
+const findMovieCallback = (err, movie) => {
+  if(err) {
+    return next(err);
+  }
+  if(!movie) {
+    const err = new Error('Movie not found');
+    err.httpStatusCode = 404;
+    return next(err);
+  }
+  req.movie = movie;
+  next();
+}
 
 const paginateMovies = (pageNumber, nPerPage) => {
   const cursor = Movie.find()
@@ -75,5 +143,7 @@ const paginateMovies = (pageNumber, nPerPage) => {
                   .limit(nPerPage);
   return cursor;
 }
+
+
 
 module.exports = controller;

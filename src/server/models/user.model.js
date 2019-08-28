@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
     required: 'Field \'name\' is required',
     match: [emailRegexp,'Please fill a valid email address'],
     lowercase: true,
-    index: true
+    index: true,
   },
   hashed_password: {
     type: String,

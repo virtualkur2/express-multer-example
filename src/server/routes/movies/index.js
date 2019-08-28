@@ -2,7 +2,7 @@ const authCtrl = require('../../controllers/auth.controller');
 const movieCtrl = require('../../controllers/movie.controller');
 
 const movies = (router) => {
-  router.route('/api/movies/create')
+  router.route('/api/movie/create')
     .get((req, res, next) => {
       const template = `
       <form action="/api/movies/create" method="post" enctype="multipart/form-data">
@@ -16,8 +16,18 @@ const movies = (router) => {
       return res.status(200).send(template);
     })
     .post(movieCtrl.upload.single('image'), movieCtrl.create);
-  router.route('/api/movies/list')
+
+  router.route('/api/movie/id/:movieId')
+    .get(movieCtrl.read);
+
+  router.route('/api/movie/title/:movieTitle')
+    .get(movieCtrl.read);
+
+  router.route('/api/movie/list')
     .get(movieCtrl.list);
+
+  router.param('movieId', movieCtrl.movieById);
+  router.param('movieTitle', movieCtrl.movieByTitle);
 }
 
 module.exports = movies;
