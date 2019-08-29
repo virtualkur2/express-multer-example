@@ -12,7 +12,22 @@ const controller = {
         err.httpStatusCode = 404;
         return next(err);
       }
-      return res.status(200).json(genres);
+      let result = genres.map((genre) => {
+        return genre.getInfo();
+      });
+      return res.status(200).json(result);
+    });
+  },
+  create: (req, res, next) => {
+    let genre = new Genre(req.body);
+    genre.save((err, newGenre) => {
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
+      return res.status(200).json({
+        message: 'Genre succesfully created.'
+      });
     });
   }
 }
