@@ -90,10 +90,13 @@ const controller = {
       }
       // verify if image was changed
       movie.image = req.file ? req.file.filename : prevMovieImage;
-      movie.updatedAt = {
+      if(!movie.updatedAt) {
+        movie.updatedAt = [];
+      }
+      movie.updatedAt.push({
         date: Date.now(),
         by: '5d66221a11ca9709a9539985'
-      }
+      });
       // TODO: create a validation middleware to save IO resources on image upload
 
       movie.save((err, saved) => {

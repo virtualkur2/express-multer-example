@@ -45,6 +45,17 @@ const controller = {
       });
     });
   },
+  update: (req, res, next) => {
+    let genre = req.genre;
+    genre.name = req.body.name || genre.name;
+    if(!genre.updatedAt) {
+      genre.updatedAt = [];
+    }
+    genre.updatedAt.push({
+      date: Date.now(),
+      by: '5d66221a11ca9709a9539985'
+    });
+  },
   genreById: (req, res, next, id) => {
     Genre.findById(id).exec((err, genre) => {
       if(err) {
