@@ -19,7 +19,7 @@ const GenreSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User'
   },
-  updatedAt: {
+  updatedAt: [{
     date: {
       type: Date
     },
@@ -27,7 +27,7 @@ const GenreSchema = new mongoose.Schema({
       type: mongoose.Schema.ObjectId,
       ref: 'User'
     }
-  }
+  }]
 });
 
 module.exports = mongoose.model('Genre', GenreSchema);
