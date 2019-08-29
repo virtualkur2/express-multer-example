@@ -36,8 +36,13 @@ const controller = {
   },
   remove: (req, res, next) => {
     let genre = req.genre;
-    genre.remove((err, result) => {
-
+    genre.remove((err, deletedGenre) => {
+      if(err) {
+        return next(err);
+      }
+      return res.status(200).json({
+        message: 'Succesfully deleted genre.'
+      });
     });
   },
   genreById: (req, res, next, id) => {
