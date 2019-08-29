@@ -19,7 +19,7 @@ const MovieSchema = new mongoose.Schema({
   image: {
     type: String,
     lowercase: true,
-    default: 'movie.jpeg'
+    default: 'movie.png'
   },
   createdAt: {
     type: Date,

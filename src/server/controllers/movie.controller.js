@@ -79,7 +79,16 @@ const controller = {
     },
     update: (req, res, next) => {
       let prevMovieImage = req.movie.image;
-      let movie = Object.assign({}, req.movie, req.body);
+      let movie = req.movie;
+
+      // Update fields of movie
+      movie.title = req.body.title || movie.title;
+      if(req.body.genres) {
+        movie.genres = [];
+        req.body.genres.forEach((genre) => {
+          movie.genres.push(genre);
+        });
+      }
       // verify if image was changed
       movie.image = req.file ? req.file.filename : prevMovieImage;
       movie.updatedAt = {
@@ -87,6 +96,7 @@ const controller = {
         by: '5d66221a11ca9709a9539985'
       }
       // TODO: create a validation middleware to save IO resources on image upload
+
       movie.save((err, saved) => {
         if(err) {
           if(req.file) {
@@ -105,7 +115,7 @@ const controller = {
           console.log(err.message);
           return next(err);
         }
-        if(req.file && prevMovieImage !== 'movie.jpeg') {
+        if(req.file && prevMovieImage !== 'movie.png') {
           return unlinkImage(movieImagesPath, prevMovieImage, (err, unlinked) => {
             if(err) {
               console.log(err.message);

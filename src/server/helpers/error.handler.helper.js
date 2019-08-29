@@ -4,6 +4,7 @@ const errorHandler = (err, req, res, next) => {
   // error
   // message
   // httpStatusCode
+  console.log(err);
   const errorType = err.constructor.name;
   let name = '';
   let message = '';
@@ -75,7 +76,10 @@ const errorHandler = (err, req, res, next) => {
     case 'SyntaxError':
 
     case 'TypeError':
-
+      name = err.name;
+      httpStatusCode = 500;
+      message = err.message;
+      break;
     case 'URIError':
 
     default:
