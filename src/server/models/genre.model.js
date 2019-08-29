@@ -30,4 +30,12 @@ const GenreSchema = new mongoose.Schema({
   }]
 });
 
+GenreSchema.methods = {
+  getInfo: function() {
+    const _id = this._id;
+    const name = this.name;
+    return {_id, name}
+  }
+}
+
 module.exports = mongoose.model('Genre', GenreSchema);

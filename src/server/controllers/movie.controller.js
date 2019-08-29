@@ -177,7 +177,7 @@ const controller = {
           console.log(err.message);
           return next(err);
         }
-        if(!movies) {
+        if(!movies.length) {
           const err = new Error('Movie not found');
           err.httpStatusCode = 404;
           return next(err);
