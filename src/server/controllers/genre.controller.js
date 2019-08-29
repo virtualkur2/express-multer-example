@@ -31,8 +31,41 @@ const controller = {
     });
   },
   remove: (req, res, next) => {
+    let genre = req.genre;
+    genre.remove((err, result) => {
 
+    });
+  },
+  genreById: (req, res, next, id) => {
+    Genre.findById(id).exec((err, genre) => {
+      if(err) {
+        return next(err);
+      }
+      if(!genre) {
+        const err = new Error('Genre not found!');
+        err.httpStatusCode = 404;
+        return next(err);
+      }
+      req.genre = genre;
+      next();
+    });
+  },
+  genreByName: (req, res, next, name) => {
+    Genre.find({name: name}).exec((err, genres) => {
+      if(err) {
+        return next(err);
+      }
+      if(!genres.length) {
+        const err = new Error('Genre not found!');
+        err.httpStatusCode = 404;
+        return next(err);
+      }
+      req.genres = genres;
+      next();
+    });
   }
 }
+
+
 
 module.exports = controller;
