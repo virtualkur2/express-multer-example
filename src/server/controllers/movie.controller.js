@@ -32,7 +32,6 @@ const controller = {
             console.log(err.message);
             return next(err);
           }
-          console.log(total);
           return res.status(200).json({movies, total});
         });
       });
@@ -205,10 +204,9 @@ const findMovieCallback = (err, movie) => {
 }
 
 const paginateMovies = (pageNumber, nPerPage) => {
-  const cursor = Movie.find()
-                  .skip(pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0 )
-                  .limit(nPerPage);
-  return cursor;
+  return Movie.find()
+    .skip(pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0 )
+    .limit(nPerPage);
 }
 
 
