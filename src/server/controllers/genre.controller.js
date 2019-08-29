@@ -30,6 +30,10 @@ const controller = {
       });
     });
   },
+  read: (req, res, next) => {
+    let genre = req.genre.getInfo();
+    return res.status(200).json(genre);
+  },
   remove: (req, res, next) => {
     let genre = req.genre;
     genre.remove((err, result) => {

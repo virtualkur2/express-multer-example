@@ -9,6 +9,7 @@ const genres = (router) => {
     .post(genreCtrl.create);
 
   router.route('/api/genre/id/:genreId')
+    .get(genreCtrl.read);
 
   router.route('/api/genre/name/:genreName')
 
