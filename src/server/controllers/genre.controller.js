@@ -22,13 +22,16 @@ const controller = {
     let genre = new Genre(req.body);
     genre.save((err, newGenre) => {
       if(err) {
-        console.log(err);
+        console.log(err.message);
         return next(err);
       }
       return res.status(200).json({
         message: 'Genre succesfully created.'
       });
     });
+  },
+  remove: (req, res, next) => {
+
   }
 }
 

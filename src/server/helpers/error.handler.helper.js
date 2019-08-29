@@ -4,7 +4,7 @@ const errorHandler = (err, req, res, next) => {
   // error
   // message
   // httpStatusCode
-  console.log(err);
+  // console.log(err);
   const errorType = err.constructor.name;
   let name = '';
   let message = '';
