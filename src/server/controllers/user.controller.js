@@ -1,6 +1,19 @@
 const User = require('../models/user.model');
 
 const controller = {
+  list: (req, res, next) => {
+    User.find({}, (err, users) => {
+      if(err) {
+        return next(err);
+      }
+      if(!users.length) {
+        const err = new Error('No users!');
+        err.httpStatusCode = 400;
+        return next(err);
+      }
+      return res.status(200).json(users);
+    });
+  },
   create: (req, res, next) => {
     const user = new User(req.body);
     user.save((err, newUser) => {
@@ -41,24 +54,33 @@ const controller = {
     });
   },
   userById: (req, res, next, id) => {
-    User.findById(id).exec(findUsrCallback);
+    User.findById(id, (err, user) => {
+      if(err) {
+        return next(err);
+      }
+      if(!user) {
+        const err = new Error('User not found!');
+        err.httpStatusCode = 404;
+        return next(err);
+      }
+      req.profile = user;
+      next();
+    });
   },
   userByEmail: (req, res, next, email) => {
-    User.find({email: email}).exec(findUsrCallback);
+    User.findOne({email: email}, (err, user) => {
+      if(err) {
+        return next(err);
+      }
+      if(!user) {
+        const err = new Error('User not found!');
+        err.httpStatusCode = 404;
+        return next(err);
+      }
+      req.profile = user;
+      next();
+    });
   }
-}
-
-const findUsrCallback = (err, user) => {
-  if(err) {
-    return next(err);
-  }
-  if(!user) {
-    const err = new Error('User not found!');
-    err.httpStatusCode = 404;
-    return next(err);
-  }
-  req.profile = user;
-  next();
 }
 
 module.exports = controller;
