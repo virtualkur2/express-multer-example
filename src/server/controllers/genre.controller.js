@@ -77,7 +77,8 @@ const controller = {
     });
   },
   genreByName: (req, res, next, name) => {
-    Genre.find({name: name}).exec((err, genres) => {
+    let nameRegExp = new RegExp(name, 'i');
+    Genre.find({name: nameRegExp}).exec((err, genres) => {
       if(err) {
         return next(err);
       }

@@ -195,8 +195,9 @@ const controller = {
         path: 'genres',
         select: 'name'
       };
+      let titleRegExp = new RegExp(title, 'i');
       // this will return an Array of Movies
-      Movie.find({title: title})
+      Movie.find({title: titleRegExp})
       .populate(populateCreatedBy)
       .populate(populateGenres)
       .exec((err, movies) => {
