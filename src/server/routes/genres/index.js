@@ -14,6 +14,7 @@ const genres = (router) => {
     .delete(genreCtrl.remove);
 
   router.route('/api/genre/name/:genreName')
+    .get(genreCtrl.read);
 
   router.param('genreId', genreCtrl.genreById);
   router.param('genreName', genreCtrl.genreByName);

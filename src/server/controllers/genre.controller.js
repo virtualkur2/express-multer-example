@@ -31,6 +31,12 @@ const controller = {
     });
   },
   read: (req, res, next) => {
+    if(req.genres) {
+      let genres = req.genres.map((genre) => {
+        return genre.getInfo();
+      });
+      return res.status(200).json(genres);
+    }
     let genre = req.genre.getInfo();
     return res.status(200).json(genre);
   },
