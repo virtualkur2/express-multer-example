@@ -5,6 +5,9 @@ const users = (router) => {
   router.route('/api/user/signup')
     .post(userCtrl.create);
 
+  router.route('/api/user/list')
+    .get(userCtrl.list);
+
   router.route('/api/user/id/:userId')
     .get(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.read)
     .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)

@@ -11,7 +11,10 @@ const controller = {
         err.httpStatusCode = 400;
         return next(err);
       }
-      return res.status(200).json(users);
+      const results = users.map((user) => {
+        return user.getInfo();
+      });
+      return res.status(200).json(results);
     });
   },
   create: (req, res, next) => {
