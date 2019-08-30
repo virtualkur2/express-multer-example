@@ -13,6 +13,8 @@ const imageFilter = (req, file, cb) => {
 const uploadImage = uploadHelper.uploadFile(movieImagesPath, imageFilter);
 const unlinkImage = uploadHelper.unlinkFile;
 
+const defaultImage = 'movie.png';
+
 const controller = {
     list: (req, res, next) => {
       // Check validity of limit, 50 documents is a low quantity of documents to fetch
@@ -117,7 +119,7 @@ const controller = {
           console.log(err.message);
           return next(err);
         }
-        if(req.file && prevMovieImage !== 'movie.png') {
+        if(req.file && prevMovieImage !== defaultImage) {
           return unlinkImage(movieImagesPath, prevMovieImage, (err, unlinked) => {
             if(err) {
               console.log(err.message);
@@ -133,7 +135,29 @@ const controller = {
       });
     },
     remove: (req, res, next) => {
-
+      let movie = req.movie;
+      movie.remove((err, deletedMovie) => {
+        if(err) {
+          return next(err);
+        }
+        if(deletedMovie.image !== defaultImage){
+          return unlinkImage(movieImagesPath, deletedMovie.image, (err, unlinked) => {
+            if(err) {
+              console.log(err.message);
+              console.log(`Conflictive path: ${err.fullPath}`);
+              err.httpStatusCode(500);
+              return next(err);
+            }
+            console.log(`Image ${deletedMovie.image} unlinked: ${unlinked}`);
+            return res.status(201).json({
+              message: 'Movie successfully deleted.'
+            });
+          });
+        }
+        return res.status(201).json({
+          message: 'Movie successfully deleted.'
+        });
+      });
     },
     movieById: (req, res, next, id) => {
       const populateCreatedBy = {
