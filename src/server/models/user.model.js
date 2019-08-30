@@ -88,7 +88,7 @@ UserSchema.methods = {
     const email = this.email;
     const isAdmin = this.isAdmin;
     const createdAt = this.updatedAt;
-    const info = { name, lastname, email, isAdmin, createdAt };
+    const info = { _id, name, lastname, email, isAdmin, createdAt };
     if(this.updatedAt) {
       info.updatedAt = this.updatedAt;
     }

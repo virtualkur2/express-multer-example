@@ -6,6 +6,11 @@ const tokenMaxAge = 60*60; // Token expiration time is expressed on seconds
 
 const controller = {
   signin: (req, res, next) => {
+    if(!req.body.email || !req.body.password) {
+      const err = new TypeError('Email and Password required!');
+      err.httpStatusCode = 400;
+      return next(err);
+    }
     User.findOne({email: req.body.email}, async (err, user) => {
       if(err) {
         err.httpStatusCode = 500;
@@ -51,7 +56,7 @@ const controller = {
     });
   },
   hasAuthorization: (req, res, next) => {
-    const authorized = req.profile && req.auth && (req.profile._id === req.auth._id);
+    const authorized = req.profile && req.auth && (req.profile._id.toString() === req.auth._id);
     if(!authorized) {
       const error = new Error('User not authorized!');
       error.httpStatusCode = 401;
