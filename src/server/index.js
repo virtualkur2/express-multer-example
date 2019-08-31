@@ -2,6 +2,7 @@ const express = require('express');
 const config = require('../config');
 const routes = require('./routes');
 const errorHandler = require('./helpers/error.handler.helper');
+const NotFoundHelper = require('./helpers/not.found.helper');
 
 const router = express.Router();
 
@@ -56,6 +57,9 @@ const server = () => {
 
   app.use(routes(router));
   app.use(errorHandler);
+
+  // Handle routes not served
+  app.use(NotFoundHelper);
 
   return app;
 }
